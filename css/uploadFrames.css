@@ -1,0 +1,18 @@
+/* main styles */
+body {
+	margin:0;
+	padding:0;
+	/*background:#BBD9EE;*/
+	background:#D8D8D8;
+  	color:#000;
+	font-family:arial,sans-serif;
+	font-size:11px;
+	}
+form {
+	margin:0;
+	padding:0
+	}
+.watermarkOn {
+        color: #CCCCCC;
+        font-style: italic;
+    }

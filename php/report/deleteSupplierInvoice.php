@@ -1,0 +1,38 @@
+<?php
+include("../commons.php");
+include("../conexion.php");
+
+session_start();
+
+//p_array($_GET);
+
+//p_array($_SESSION);
+
+//$newPrice = decimalPad($_GET['price']);
+$queryTickets="
+DELETE
+FROM
+	supplierinvoiceticket
+WHERE
+	supplierInvoiceId=".$_GET['supplierInvoiceId']."
+";
+mysql_query($queryTickets,$conexion);
+
+$queryInvoice="
+DELETE
+FROM
+	supplierinvoice
+WHERE
+	supplierInvoiceId=".$_GET['supplierInvoiceId']."
+		";
+		
+//echo $queryUpdate;
+mysql_query($queryInvoice,$conexion);
+
+mysql_close($conexion);
+
+$response['supplierInvoiceId'] = $_GET['supplierInvoiceId'];
+
+echo json_encode($response['supplierInvoiceId']);
+
+?>
