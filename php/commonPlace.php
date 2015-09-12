@@ -14,7 +14,7 @@ $queryUser =
 		users
 	WHERE
 		userName = '".$_POST['user']."' AND
-		userPass = '".$_POST['pass']."'";
+		userPass = '".md5($_POST['pass'])."'";
 $userList = mysql_query($queryUser,$conexion);
 $userCount = mysql_num_rows($userList);
 if($userCount==0)
