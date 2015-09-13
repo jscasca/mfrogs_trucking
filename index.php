@@ -313,7 +313,7 @@ $(document).ready(function() {
 								echo "<td>".$broker['brokerPid']."</td>";
 								echo "<td>".$broker['brokerName']."</td>";
 								echo "<td>".$broker['brokerGender']."</td>";
-								echo "<td>".$broker['EthnicName']."</td>";
+								echo "<td>".$broker['ethnicName']."</td>";
 								echo "</tr>";
 								$odd = !$odd;
 							}

@@ -204,7 +204,7 @@ text-align: center;
 
 $queryTotal = "
 							SELECT
-								SUM( (ticketBrokerAmount * itemBrokerCost) * (if(item.itemDescription = 'TOLL', 100, if(driver.driverId is null, broker.brokerPercentage, driver.driverPercentage ) ) )/100 ) as totalReported
+								SUM( (ticketBrokerAmount * itemBrokerCost) * (ticketPercentage)/100 ) as totalReported
 							FROM
 								reportticket
 								JOIN report using (reportId)
@@ -220,7 +220,7 @@ $queryInvoices="
 SELECT 
 	brokerName,
 	SUM(ticketBrokerAmount * itemBrokerCost) AS totalGross,
-	SUM( (ticketBrokerAmount * itemBrokerCost) * ( if(item.itemDescription = 'TOLL', 100, broker.brokerPercentage)/100 ) ) as totalIncome
+	SUM( (ticketBrokerAmount * itemBrokerCost) * ( ticketPercentage ) as totalIncome
 FROM 
 	ticket
 	JOIN item USING ( itemId )

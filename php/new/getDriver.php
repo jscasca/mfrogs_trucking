@@ -11,15 +11,16 @@ if(isset($_GET['truckId']))
 {
 	$queryTrucks =
 	"SELECT
-		*
+		driver.driverId as driverId, driver.driverPercentage as percentage
 	FROM
-		lastdrivingrelation
+		lastdrivingrelation join driver on lastdrivingrelation.driverId = driver.driverId 
 	WHERE
 		truckId = '".$_GET['truckId']."'";
 	$result = mysql_query($queryTrucks,$conexion);
 	
 	while($row = mysql_fetch_assoc($result)){
 		$jsondata['driverId'] = $row['driverId'];
+		$jsondata['percentage'] = $row['percentage'];
 	}
 	echo json_encode($jsondata);
 }

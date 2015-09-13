@@ -201,7 +201,7 @@ $ticketsProfitQuery = "
 		broker.brokerId,
 		broker.brokerName,
 		broker.brokerPercentage,
-		SUM(ticketBrokerAmount * itemBrokerCost) as totalIncome,
+		SUM(ticketBrokerAmount * (ticketPercentage/100) * itemBrokerCost ) as totalIncome,
 		COUNT(*) as totalTickets
 	FROM
 		ticket
@@ -221,7 +221,7 @@ while($brokerTicketInfo = mysql_fetch_assoc($ticketsBalance)){
 	
 	$ticketsReportedQuery = "
 		SELECT
-			SUM(ticketBrokerAmount * itemBrokerCost) as totalReported,
+			SUM(ticketBrokerAmount * (ticketPercentage/100) * itemBrokerCost) as totalReported,
 			COUNT(*) as reportedTickets
 		FROM
 			report
@@ -247,13 +247,12 @@ while($brokerTicketInfo = mysql_fetch_assoc($ticketsBalance)){
 	";
 	$paidInfo = mysql_fetch_assoc(mysql_query($reportsPaidQuery,$conexion));
 	
-	$brokerIncome = $brokerTicketInfo['totalIncome'] * $brokerTicketInfo['brokerPercentage']/100;
-	$brokerReported = $reportedInfo['totalReported'] * $brokerTicketInfo['brokerPercentage']/100;
+	$brokerIncome = $brokerTicketInfo['totalIncome'];
+	$brokerReported = $reportedInfo['totalReported'];
 	$brokerPaid = $paidInfo['totalPaid'];
 	
 	$tableHolder.= "<tr>";
 	$tableHolder.= "<td>".$brokerTicketInfo['brokerName']."</td>";
-	$tableHolder.= "<td>".decimalPad($brokerTicketInfo['brokerPercentage'])."%</td>";
 	$tableHolder.= "<td>".decimalPad($brokerIncome)."</td>";
 	$tableHolder.= "<td>(".$brokerTicketInfo['totalTickets'].")</td>";
 	$tableHolder.= "<td>".decimalPad($brokerReported)."</td>";
@@ -276,7 +275,7 @@ while($brokerTicketInfo = mysql_fetch_assoc($ticketsBalance)){
 		<td><? echo decimalPad($paidTotaled);?></td><td></td>
 	</tr>
 	<tr>
-		<th colspan='2'>Broker</th>
+		<th colspan='1'>Broker</th>
 		<th >Income</th><th>Total tickets</th>
 		<th >In report</th><th>Not reported</th>
 		<th >Paid</th><th># cheques</th>

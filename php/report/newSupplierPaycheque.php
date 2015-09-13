@@ -187,8 +187,6 @@ function validateForm(){
 						
 						$paidInfo = mysql_fetch_assoc(mysql_query($paidTotal, $conexion));
 						
-						//$percentage = ($reportInfo['driverId']==null?$reportInfo['brokerPercentage']:$reportInfo['driverPercentage'])/100;
-						
 						$paidTotal = $paidInfo['totalPaid'] == null ? 0 : $paidInfo['totalPaid'];
 						$reportTotal = ($reportInfo['supplierInvoiceAmount'] == null ? 0 : $reportInfo['supplierInvoiceAmount']);
 						

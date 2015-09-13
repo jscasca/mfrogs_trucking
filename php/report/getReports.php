@@ -73,7 +73,7 @@ $tbody.= "<tbody>";
 while($invoice = mysql_fetch_assoc($reports)){
 	$queryTotal = "
 		SELECT
-			SUM( (ticketBrokerAmount * itemBrokerCost) * (if(item.itemDescription like 'toll%', 100, if(driver.driverId is null, broker.brokerPercentage, driver.driverPercentage ) ) )/100 ) as totalReported
+			SUM( (ticketBrokerAmount * itemBrokerCost) * (ticketPercentage)/100 ) as totalReported
 		FROM
 			reportticket
 			JOIN report using (reportId)
@@ -98,8 +98,6 @@ while($invoice = mysql_fetch_assoc($reports)){
 	";
 	
 	$paidInfo = mysql_fetch_assoc(mysql_query($paidTotal, $conexion));
-	
-	//$percentage = ($invoice['driverId']==null?$invoice['brokerPercentage']:$invoice['driverPercentage'])/100;
 	
 	$paidTotal = decimalPad($paidInfo['totalPaid'] == null ? 0 : $paidInfo['totalPaid'], 2);
 	$chequesTotal = $paidInfo['number'];

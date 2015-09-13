@@ -40,13 +40,20 @@ $lastNew = $lastNew["newsComment"]." -".to_MDY($lastNew["newsDate"]);
 <script type="text/javascript">	
 var patternDigits = new RegExp(/[0-9]+/);
 patternDigits.compile(patternDigits);
+var lastDefaultPercentage = 100;
 
 $(document).ready(function()
 {
 	$('#brokerId').change(function() {
 		var broker=this.value;
+		getBrokerPercentage(broker);
 		getTrucks(broker);
 		getDrivers(broker);
+	});
+	
+	$('#driverId').change(function() {
+		var driver = this.value;
+		getDriverPercentage(driver);
 	});
 	
 	$('#truckId').change(function(){
@@ -82,22 +89,24 @@ $(document).ready(function()
 			var ticketBrokerAmount=$('#ticketBrokerAmount').val();
 			var ticketNumber=$('#ticketNumber').val();
 			var ticket=$('#ticketMfi').val();
-			submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticket);
+			var ticketPercentage=$('#ticketPercentage').val();
+			submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticketPercentage);
 			var intPos = ticket.search(patternDigits);
 			var prefix = ticket.substring(0,intPos);
 			var numeric = ticket.substring(intPos);
 			var newTicket = parseInt(numeric) + 1;
 			$('#ticketMfi').val(prefix + newTicket);
+			$('#ticketPercentage').val(lastDefaultPercentage);
 		}
 		else
 			alert('Missing Data');
 	});
 });
-function submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticket){
+function submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticket, ticketPercentage){
 	$.ajax({
 		type: "GET",
 		url: "submitTicket.php",
-		data: "itemId="+itemId+"&truckId="+truckId+"&driverId="+driverId+"&ticketDate="+ticketDate+"&ticketAmount="+ticketAmount+"&ticketBrokerAmount="+ticketBrokerAmount+"&ticketNumber="+ticketNumber+"&ticket="+ticket,
+		data: "itemId="+itemId+"&truckId="+truckId+"&driverId="+driverId+"&ticketDate="+ticketDate+"&ticketAmount="+ticketAmount+"&ticketBrokerAmount="+ticketBrokerAmount+"&ticketNumber="+ticketNumber+"&ticket="+ticket+"&ticketPercentage="*ticketPercentage,
 		success:function(data){
 			var obj=jQuery.parseJSON(data);
 			console.log(obj);
@@ -158,6 +167,29 @@ function getItems(project){
 	});
 }
 
+function getBrokerPercentage(broker) {
+	getPercentage('broker', broker);
+}
+
+function getPercentage(type, id) {
+	$.ajax({
+		type: "GET",
+		url: "getPercentage.php",
+		data: "type=" + type + "&id="+id,
+		success:function(data){
+			var obj=jQuery.parseJSON(data);
+			percentage = obj.percentage
+			lastDefaultPercentage = percentage;
+			$('#ticketPercentage').val(percentage);
+		},
+		async: false
+	});
+}
+
+function getDriverPercentage(driver) {
+	getPercentage('driver', driver);
+}
+
 function getDriver(truck){
 	$.ajax({
 		type: "GET",
@@ -166,6 +198,9 @@ function getDriver(truck){
 		success:function(data){
 			var obj=jQuery.parseJSON(data);
 			$("#driverId").val(obj.driverId); 
+			var percentage = obj.percentage;
+			lastDefaultPercentage = percentage;
+			$('#ticketPercentage').val(percentage);
 		},
 		async: false
 	});
@@ -240,6 +275,12 @@ function validateForm(){
 	if(document.getElementById('truckId').selectedIndex==0 ){
 		alert("Please select a truck number");
 			document.formValidate.truckId.focus;
+			return false;
+	}
+	
+	if(document.getElementById('ticketPercentage').value.length == 0) {
+		alert("Please type a percentage");
+			document.formValidate.ticketPercentage.focus;
 			return false;
 	}
 	
@@ -417,7 +458,7 @@ function validateForm(){
 						echo "</select>";
 						?><span style="color:red;">*</span>
 						</td>
-						<td></td>
+						<td><strong>%</strong></td>
 					</tr>
 					<tr>
 						
@@ -476,7 +517,7 @@ function validateForm(){
 						echo "</select>";
 						?>
 						</td>
-						<td></td>
+						<td><input type='text' size='4px' id='ticketPercentage' name='ticketPercentage' ></td>
 					</tr>
 					<tr class='bg' >
 						<td><strong>Date:</strong><span style="color:red;">*</span></td>

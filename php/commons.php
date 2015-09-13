@@ -104,14 +104,12 @@ function getReportPaid($reportId, $conexionHandler){
 function getReportTotal($reportId, $conexionHandler){
 	$queryTotal = "
 		SELECT
-			SUM( (ticketBrokerAmount * itemBrokerCost) * (if(item.itemDescription like 'toll%', 100, if(driver.driverId is null, broker.brokerPercentage, driver.driverPercentage ) ) )/100 ) as totalReported
+			SUM( (ticketBrokerAmount * itemBrokerCost) * (ticketPercentage)/100 ) as totalReported
 		FROM
 			reportticket
 			JOIN report using (reportId)
 			JOIN ticket using (ticketId)
 			JOIN item using (itemId)
-			JOIN broker using (brokerId)
-			LEFT JOIN driver on (driver.driverId = report.reportType)
 		WHERE
 			reportId = ".$reportId."
 	";

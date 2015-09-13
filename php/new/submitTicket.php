@@ -28,7 +28,8 @@ if($test['existing']==0)
 			ticketAmount,
 			ticketBrokerAmount,
 			ticketNumber,
-			ticketMfi
+			ticketMfi,
+			ticketPercentage
 		)
 		values
 		(
@@ -39,7 +40,8 @@ if($test['existing']==0)
 			'".mysql_real_escape_string($_GET['ticketAmount'])."',
 			'".mysql_real_escape_string($_GET['ticketBrokerAmount'])."',
 			'".mysql_real_escape_string($_GET['ticketNumber'])."',
-			'".mysql_real_escape_string($_GET['ticket'])."'
+			'".mysql_real_escape_string($_GET['ticket'])."',
+			'".mysql_real_escape_string($_GET['ticketPercentage'])."'
 		)";
 
 	//echo $queryTicket;

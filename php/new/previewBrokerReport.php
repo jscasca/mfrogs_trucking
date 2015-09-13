@@ -324,9 +324,9 @@ $invoicesInfo3=mysql_fetch_assoc($invoices3);
 		echo "<td align=right >".decimalPad($ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']);echo"</td>";
 		
 		if(strpos(strtolower($ticket['itemDescription']),"toll")===FALSE){
-			echo "<td>".decimalPad($projectInfo['brokerPercentage'])."%</td>";
-			echo "<td align=right >".decimalPad($ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']*($projectInfo['brokerPercentage']/100));echo"</td>";
-			$total+=$ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']*($projectInfo['brokerPercentage']/100);
+			echo "<td>".decimalPad($ticket['ticketPercentage'])."%</td>";
+			echo "<td align=right >".decimalPad($ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']*($ticket['ticketPercentage']/100));echo"</td>";
+			$total+=$ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']*($ticket['ticketPercentage']/100);
 		}else{
 			echo "<td>".decimalPad('100')."%</td>";
 			echo "<td align=right >".decimalPad($ticket['ticketBrokerAmount']*$ticket['itemBrokerCost']);echo"</td>";

@@ -182,7 +182,7 @@ function validateForm(){
 						
 						$queryTotal = "
 							SELECT
-								SUM( (ticketBrokerAmount * itemBrokerCost) * (if(item.itemDescription like 'toll%', 100, if(driver.driverId is null, broker.brokerPercentage, driver.driverPercentage ) ) )/100 ) as totalReported
+								SUM( (ticketBrokerAmount * itemBrokerCost) * (ticketPercentage)/100 ) as totalReported
 							FROM
 								reportticket
 								JOIN report using (reportId)
