@@ -88,13 +88,16 @@ $(document).ready(function()
 			var ticketAmount=$('#ticketAmount').val();
 			var ticketBrokerAmount=$('#ticketBrokerAmount').val();
 			var ticketNumber=$('#ticketNumber').val();
+			console.log(ticketNumber);
 			var ticket=$('#ticketMfi').val();
+			console.log(ticket);
 			var ticketPercentage=$('#ticketPercentage').val();
-			submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticketPercentage);
+			submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmount,ticketNumber,ticket, ticketPercentage);
 			var intPos = ticket.search(patternDigits);
 			var prefix = ticket.substring(0,intPos);
 			var numeric = ticket.substring(intPos);
 			var newTicket = parseInt(numeric) + 1;
+			console.log(newTicket);
 			$('#ticketMfi').val(prefix + newTicket);
 			$('#ticketPercentage').val(lastDefaultPercentage);
 		}
@@ -106,7 +109,7 @@ function submit(itemId,truckId,driverId,ticketDate,ticketAmount,ticketBrokerAmou
 	$.ajax({
 		type: "GET",
 		url: "submitTicket.php",
-		data: "itemId="+itemId+"&truckId="+truckId+"&driverId="+driverId+"&ticketDate="+ticketDate+"&ticketAmount="+ticketAmount+"&ticketBrokerAmount="+ticketBrokerAmount+"&ticketNumber="+ticketNumber+"&ticket="+ticket+"&ticketPercentage="*ticketPercentage,
+		data: "itemId="+itemId+"&truckId="+truckId+"&driverId="+driverId+"&ticketDate="+ticketDate+"&ticketAmount="+ticketAmount+"&ticketBrokerAmount="+ticketBrokerAmount+"&ticketNumber="+ticketNumber+"&ticket="+ticket+"&ticketPercentage="+ticketPercentage,
 		success:function(data){
 			var obj=jQuery.parseJSON(data);
 			console.log(obj);
