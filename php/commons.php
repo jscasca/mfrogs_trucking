@@ -356,15 +356,18 @@ function getCoordinates($address)
 }/**/
 
 function getCoordinates($address) {
-	$_url = sprintf('http://maps.google.com/maps?output=js&q=%s',rawurlencode($address));
+	$_url = sprintf('http://maps.google.com/maps/api/geocode/json?sensor=false&address=%s',rawurlencode($address));
 	$_result = false;
 	if($_result = file_get_contents($_url)) {
-		if(strpos($_result,'errortips')>1 || strpos($_result,'Did you mean:') !== false) return false;
+		$json = json_decode($_result, true);
+		$_coords[0] = $json['results'][0]['geometry']['location']['lat'];
+		$_coords[1] = $json['results'][0]['geometry']['location']['lng'];
+		/*if(strpos($_result,'errortips')>1 || strpos($_result,'Did you mean:') !== false) return false;
 		preg_match('!center:\s*{lat:\s*(-?\d+\.\d+),lng:\s*(-?\d+\.\d+)}!U', $_result, $_match);
 		$_coords['lat'] = $_match[1];
 		$_coords['long'] = $_match[2];
 		$_coords[0] = $_coords['lat'];
-		$_coords[1] = $_coords['long'];
+		$_coords[1] = $_coords['long'];*/
 	}
 	return $_coords;
 }
